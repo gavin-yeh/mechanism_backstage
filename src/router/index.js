@@ -56,6 +56,28 @@ export const constantRoutes = [
   },
 
   {
+    path: '/div1',
+    component: Layout,
+    redirect: '/div1/product/report',
+    name: 'div1',
+    meta: { title: '第一處', icon: 'el-icon-s-data' },
+    children: [
+      {
+        path: 'weekly_product_report',
+        name: 'WeeklyProductReport',
+        component: () => import('@/views/staff-product-report/submit/index'),
+        meta: { title: '職員輸入', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: '修改曲線',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '修改曲線', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

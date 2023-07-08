@@ -4,8 +4,8 @@ export function login(data) {
   return request({
     url: '/user/login',
     method: 'post',
-    baseURL: process.env.VUE_APP_SERVER_API,
-    data
+    data,
+    baseURL: process.env.VUE_APP_SERVER_API
   })
 }
 
@@ -13,8 +13,8 @@ export function getInfo(token) {
   return request({
     url: '/user/info',
     method: 'get',
-    baseURL: process.env.VUE_APP_SERVER_API
     // params: { token }
+    baseURL: process.env.VUE_APP_SERVER_API
   })
 }
 
