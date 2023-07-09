@@ -1,7 +1,6 @@
 import { updateSum, setDateSelect, createAndCheckData } from '../template.js'
 import { setCurveStyle, setConditionStyle, showCheckMessage } from '../rendering.js'
-import { weeklyProductReportGet, weeklyProductReportSubmit } from '@/api/weeklyProductReport'
-import store from '@/store'
+import { userWeeklyProductReportGet, userWeeklyProductReportSubmit } from '@/api/weeklyProductReport'
 
 export default {
   methods: {
@@ -17,7 +16,7 @@ export default {
     },
     fetchData(date) {
       return new Promise((resolve, reject) => {
-        weeklyProductReportGet(date).then(response => {
+        userWeeklyProductReportGet(date).then(response => {
           this.respData = response.data
           resolve()
         }).catch((err) => {
@@ -28,9 +27,11 @@ export default {
     },
     submitForm() {
       document.getElementById('loading-overlay').style.display = 'block'
+
       return new Promise((resolve, reject) => {
         const submitData = createAndCheckData()
-        weeklyProductReportSubmit(submitData).then(response => {
+
+        userWeeklyProductReportSubmit(submitData).then(response => {
           document.getElementById('loading-overlay').style.display = 'none'
           alert('已完成，列印請使用黃色紙張')
           window.location.href = response.data.url
@@ -74,8 +75,6 @@ export default {
   async mounted() {
     const date = new Date()
     await this.fetchData(date.toISOString().split('T')[0])
-
-    console.log(store.getters)
 
     if (this.respData.alreadyWrote) {
       alert('你的檔案本週資料庫已有數據，如要修改，請通知泯諭。')

@@ -129,11 +129,11 @@ export function showCheckMessage(title, input) {
 export function showCheckAndChangeMessage(title, input) {
   var header = `
     <table>
-          <span>名字: <span id="staff_name">${input.staffName}</span></span>
-          <br>
-          <span>職位: <span id="position">${input.position}</span></span>
-          <br>
-          <span>日期: <span id="date">${input.date.toLocaleDateString()}</span></span>
+      <span>名字: <span id="staff_name">${input.staffName}</span></span>
+      <br>
+      <span>職位: <span id="position">${input.position}</span></span>
+      <br>
+      <span>日期: <span id="date">${input.date.toLocaleDateString()}</span></span>
     </table>`
   document.getElementById('confirm-message-header').innerHTML = header
   document.getElementById('confirm-message-header').value = input.situation_id
@@ -146,16 +146,16 @@ export function showCheckAndChangeMessage(title, input) {
     const curveCount = i + 1
 
     mainCurve += `
-        <tr>
-          <td>曲線名稱: <span id="confirm-main-curve-name-${curveCount}"></span></td>
-        </tr>
-        <tr>
-          <td id="confirm-main-curve-statistics-${curveCount}">曲線值: </td>
-        </tr>
-        <tr>
-          <td>狀況: <span id="confirm-main-curve-condition-${curveCount}"></span></td>
-        </tr>
-      `
+      <tr>
+        <td>曲線名稱: <span id="confirm-main-curve-name-${curveCount}"></span></td>
+      </tr>
+      <tr>
+        <td id="confirm-main-curve-statistics-${curveCount}">曲線值: </td>
+      </tr>
+      <tr>
+        <td>狀況: <span id="confirm-main-curve-condition-${curveCount}"></span></td>
+      </tr>
+    `
   }
   mainCurve += `</table>`
 
@@ -178,16 +178,16 @@ export function showCheckAndChangeMessage(title, input) {
     const curveCount = i + 1
 
     subCurve += `
-        <tr>
-          <td>曲線名稱: <span id="confirm-sub-curve-name-${curveCount}"></span></td>
-        </tr>
-        <tr>
-          <td id="confirm-sub-curve-statistics-${curveCount}">曲線值: </td>
-        </tr>
-        <tr>
-          <td>狀況: <span id="confirm-sub-curve-condition-${curveCount}"></span></td>
-        </tr>
-      `
+      <tr>
+        <td>曲線名稱: <span id="confirm-sub-curve-name-${curveCount}"></span></td>
+      </tr>
+      <tr>
+        <td id="confirm-sub-curve-statistics-${curveCount}">曲線值: </td>
+      </tr>
+      <tr>
+        <td>狀況: <span id="confirm-sub-curve-condition-${curveCount}"></span></td>
+      </tr>
+    `
   }
   subCurve += `</table>`
 
@@ -219,13 +219,13 @@ export function showCheckAndChangeMessage(title, input) {
         <th>累計</th>
       </tr>
       <tr>
-        <td><input type="number" step="0.1" id="w4"></td>
-        <td><input type="number" step="0.1" id="w5"></td>
-        <td><input type="number" step="0.1" id="w6"></td>
-        <td><input type="number" step="0.1" id="w7"></td>
-        <td><input type="number" step="0.1" id="w1"></td>
-        <td><input type="number" step="0.1" id="w2"></td>
-        <td><input type="number" step="0.1" id="w3"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w4"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w5"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w6"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w7"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w1"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w2"></td>
+        <td><input style="width: 60px;" type="number" step="0.1" id="w3"></td>
         <td><span id="sum_work_hours">${whTotal}</span></td>
       </tr>
     </table>`
@@ -254,26 +254,26 @@ export function showCheckAndChangeMessage(title, input) {
       </tr>
       <tr>
         <td>時數</td>
-        <td><input type="number" step="0.1" id="class_hours"></td>
-        <td><input type="number" step="0.1" id="correspondence_hours"></td>
-        <td><input type="number" step="0.1" id="analysis_hours"></td>
-        <td><input type="number" step="0.1" id="character_plan_hours"></td>
+        <td><input style="width: 90px;" type="number" step="0.1" id="class_hours"></td>
+        <td><input style="width: 90px;" type="number" step="0.1" id="correspondence_hours"></td>
+        <td><input style="width: 90px;" type="number" step="0.1" id="analysis_hours"></td>
+        <td><input style="width: 90px;" type="number" step="0.1" id="character_plan_hours"></td>
         <td><span id="sum_study_hours">${shTotal}</span></td>
       </tr>
       <tr>
         <td>名稱</td>
-        <td><input type="text" id="class_name"></td>
-        <td><input type="text" id="correspondence_name"></td>
-        <td><input type="text" id="analysis_name"></td>
-        <td><input type="text" id="character_plan_name"></td>
+        <td><input style="width: 90px;" type="text" id="class_name"></td>
+        <td><input style="width: 90px;" type="text" id="correspondence_name"></td>
+        <td><input style="width: 90px;" type="text" id="analysis_name"></td>
+        <td><input style="width: 90px;" type="text" id="character_plan_name"></td>
         <td></td>
       </tr>
       <tr>
         <td>進度</td>
-        <td><input type="text" id="class_progress"></td>
-        <td><input type="text" id="correspondence_progress"></td>
-        <td><input type="text" id="analysis_progress"></td>
-        <td><input type="text" id="character_plan_progress"></td>
+        <td><input style="width: 90px;" type="text" id="class_progress"></td>
+        <td><input style="width: 90px;" type="text" id="correspondence_progress"></td>
+        <td><input style="width: 90px;" type="text" id="analysis_progress"></td>
+        <td><input style="width: 90px;" type="text" id="character_plan_progress"></td>
         <td></td>
       </tr>
     </table>`

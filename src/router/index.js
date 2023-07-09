@@ -69,9 +69,9 @@ export const constantRoutes = [
         meta: { title: '職員輸入', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: '修改曲線',
-        component: () => import('@/views/tree/index'),
+        path: 'weekly_product_list',
+        name: 'WeeklyProductList',
+        component: () => import('@/views/staff-product-report/correct/index'),
         meta: { title: '修改曲線', icon: 'tree' }
       }
     ]
