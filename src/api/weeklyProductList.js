@@ -14,7 +14,7 @@ export function weeklyProductListSubmit(data) {
     url: '/weeklyProductList',
     method: 'post',
     data,
-    timeout: 10000,
+    timeout: 30000,
     baseURL: process.env.VUE_APP_SERVER_API
   })
 }
