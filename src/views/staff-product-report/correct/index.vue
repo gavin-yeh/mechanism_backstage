@@ -102,14 +102,14 @@
           </td>
           <td>
             <select v-model="item.formulaStatus" @change="onChangeFormulaStatus(item)">
-              <option value="yes">完成</option>
-              <option value="no">否</option>
+              <option value="yes">已交</option>
+              <option value="no">未交</option>
             </select>
           </td>
           <td>
             <select v-model="item.staffMeeting" @change="onChangeStaffMeeting(item)">
               <option value="yes">出席</option>
-              <option value="no">否</option>
+              <option value="no">未出席</option>
             </select>
           </td>
           <td><input v-model="item.comment" type="text"></td>

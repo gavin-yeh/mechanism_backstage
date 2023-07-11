@@ -36,8 +36,10 @@ export default {
       const point = pointsConditionSettingMap.get(item.totalStatus)
       if (point) {
         item.positionStatus = point
-        calculateTotalPoints(item)
+      } else {
+        item.positionStatus = 0
       }
+      calculateTotalPoints(item)
     },
     onChangeFormulaStatus(item) {
       if (item.formulaStatus === 'no') {

@@ -66,6 +66,18 @@ service.interceptors.response.use(
           })
         })
       }
+      // relogin
+      if (res.code === 5001) {
+        MessageBox.confirm('res.message', 'Confirm logout', {
+          confirmButtonText: 'Re-Login',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
