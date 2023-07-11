@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in filteredRoutes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -28,10 +28,14 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
+      'permission_routes',
       'sidebar'
     ]),
     routes() {
       return this.$router.options.routes
+    },
+    filteredRoutes() {
+      return this.routes.filter(route => this.hasAccess(route))
     },
     activeMenu() {
       const route = this.$route
@@ -50,6 +54,15 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  methods: {
+    hasAccess(route) {
+      if (route.meta && route.meta.roles) {
+        return route.meta.roles.some(role => this.permission_routes.includes(role))
+      }
+
+      return true
     }
   }
 }

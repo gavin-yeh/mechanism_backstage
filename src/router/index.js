@@ -67,12 +67,6 @@ export const constantRoutes = [
         name: 'WeeklyProductReport',
         component: () => import('@/views/staff-product-report/submit/index'),
         meta: { title: '輸入黃單', icon: 'table' }
-      },
-      {
-        path: 'xx',
-        name: 'xx',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: '開發中...', icon: 'table' }
       }
     ]
   },
@@ -81,19 +75,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/div7',
     name: 'div7',
-    meta: { title: '第七處', icon: 'el-icon-s-data' },
+    meta: { title: '第七處', icon: 'el-icon-s-data', roles: ['admin', 'div7'] },
     children: [
       {
         path: 'weekly_product_list',
         name: 'WeeklyProductList',
         component: () => import('@/views/staff-product-report/correct/index'),
-        meta: { title: '曲線總覽', icon: 'tree', roles: ['admin', 'director'] }
-      },
-      {
-        path: 'xx',
-        name: 'xx',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: '開發中...', icon: 'tree' }
+        meta: { title: '曲線總覽', icon: 'tree' }
       }
     ]
   },

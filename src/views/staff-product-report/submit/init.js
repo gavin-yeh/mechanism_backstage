@@ -19,6 +19,12 @@ export default {
         userWeeklyProductReportGet(date).then(response => {
           this.respData = response.data
           resolve()
+
+          if (this.respData.alreadyWrote) {
+            alert('你的檔案本週資料庫已有數據，如要修改，請通知泯諭。')
+            history.back()
+            return
+          }
         }).catch((err) => {
           alert('資料庫發生錯誤：' + err)
           reject(err)
@@ -75,12 +81,6 @@ export default {
   async mounted() {
     const date = new Date()
     await this.fetchData(date.toISOString().split('T')[0])
-
-    if (this.respData.alreadyWrote) {
-      alert('你的檔案本週資料庫已有數據，如要修改，請通知泯諭。')
-      history.back()
-      return
-    }
 
     // 初始化頁面
     document.getElementById('auth-check').checked = false // 取消勾選
