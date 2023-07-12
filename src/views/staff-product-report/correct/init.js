@@ -108,7 +108,7 @@ export default {
 
       return new Promise((resolve, reject) => {
         weeklyProductReportSubmit({ staffId, submitData }).then(response => {
-          alert('已更新')
+          alert('已更新，此職員點數已重置，請重新檢視此職員點數')
 
           this.onChange(thursday)
 
