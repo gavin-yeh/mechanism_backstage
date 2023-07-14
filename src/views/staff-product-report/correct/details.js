@@ -2,12 +2,12 @@
 import { studyItems } from '../define.js'
 import { showCheckAndChangeMessage } from '../rendering.js'
 
-export function showModal(staff, situation, staffSituationItems, staffSituationStudies) {
+export function showModal(staff, situation, items, studies, outflows, workings) {
   var mainCurve = []
   var subCurve = []
 
-  for (var i = 0; i < staffSituationItems.length; i++) {
-    const curve = staffSituationItems[i]
+  for (var i = 0; i < items.length; i++) {
+    const curve = items[i]
     const c = {
       name: curve.curve_name,
       statistics: { caption: curve.statistics_caption, style: curve.statistics_style, values: [curve.statistics1, curve.statistics2, curve.statistics3] },
@@ -21,7 +21,7 @@ export function showModal(staff, situation, staffSituationItems, staffSituationS
   }
 
   const studyHours = {}
-  for (const item of staffSituationStudies) {
+  for (const item of studies) {
     const studyItem = studyItems.find(i => i.value === item.type)
     if (studyItem) {
       studyHours[studyItem.key] = {
@@ -32,6 +32,11 @@ export function showModal(staff, situation, staffSituationItems, staffSituationS
     }
   }
 
+  const letter = outflows.find(p => p.outflow_type === 'letter')
+  const line = outflows.find(p => p.outflow_type === 'line')
+  const email = outflows.find(p => p.outflow_type === 'email')
+  const promote = outflows.find(p => p.outflow_type === 'promote')
+
   var input = {
     situation_id: situation.id,
     staffName: staff.name,
@@ -41,20 +46,20 @@ export function showModal(staff, situation, staffSituationItems, staffSituationS
     subCurve: subCurve,
     workHours: [
       0,
-      Number(situation.working_hours_w1),
-      Number(situation.working_hours_w2),
-      Number(situation.working_hours_w3),
-      Number(situation.working_hours_w4),
-      Number(situation.working_hours_w5),
-      Number(situation.working_hours_w6),
-      Number(situation.working_hours_w7)
+      Number(workings.find(p => p.week_day === 'monday').working_hours),
+      Number(workings.find(p => p.week_day === 'tuesday').working_hours),
+      Number(workings.find(p => p.week_day === 'wednesday').working_hours),
+      Number(workings.find(p => p.week_day === 'thursday').working_hours),
+      Number(workings.find(p => p.week_day === 'friday').working_hours),
+      Number(workings.find(p => p.week_day === 'saturday').working_hours),
+      Number(workings.find(p => p.week_day === 'sunday').working_hours)
     ],
     studyHours: studyHours,
     outflow: {
-      letter: situation.outflow_letter,
-      line: situation.outflow_line,
-      email: situation.outflow_email,
-      promote: situation.outflow_promote
+      letter: (letter) ? letter.amount : 0,
+      line: (line) ? line.amount : 0,
+      email: (email) ? email.amount : 0,
+      promote: (promote) ? promote.amount : 0
     }
   }
 

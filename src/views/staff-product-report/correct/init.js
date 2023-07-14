@@ -87,7 +87,9 @@ export default {
           const profile = response.data.profile
           const items = response.data.items
           const studies = response.data.studies
-          showModal(staff, profile, items, studies)
+          const outflows = response.data.outflows
+          const workings = response.data.workings
+          showModal(staff, profile, items, studies, outflows, workings)
 
           resolve()
         }).catch((err) => {
