@@ -1,6 +1,7 @@
 import { setDateSelect, updateSum, createAndCheckData } from '../template.js'
 import { showModal } from './details.js'
 import { calculateTotalPoints, employmentPoints } from './modal.js'
+import { transformRows } from './points.js'
 import { weeklyProductReportGet, weeklyProductReportSubmit } from '@/api/weeklyProductReport'
 import { weeklyProductListGet, weeklyProductListSubmit } from '@/api/weeklyProductList'
 import { pointsConditionSettingMap, employmentSettingMap } from '../define.js'
@@ -93,7 +94,7 @@ export default {
 
           resolve()
         }).catch((err) => {
-          alert('資料庫發生錯誤：' + err)
+          alert(err)
           reject(err)
         })
       })
@@ -116,7 +117,7 @@ export default {
 
           resolve()
         }).catch((err) => {
-          alert('資料庫發生錯誤：' + err)
+          alert(err)
           reject(err)
         })
       })
@@ -124,12 +125,21 @@ export default {
     fetchData(date) {
       return new Promise((resolve, reject) => {
         weeklyProductListGet(date).then(response => {
-          this.thursday = response.data.thursday
-          this.thursdayList = response.data.thursdayList
-          this.rows = response.data.rows
+          this.thursday = response.data.thursdayInfo.thursday
+          this.thursdayList = response.data.thursdayInfo.thursdayList
+
+          const staffList = response.data.staffList
+          const profiles = response.data.profiles
+          const points = response.data.points
+          const outflows = response.data.outflows
+          const studies = response.data.studies
+          const workings = response.data.workings
+          const rows = transformRows(this.thursday, staffList, profiles, points, outflows, studies, workings)
+
+          this.rows = rows
           resolve()
         }).catch((err) => {
-          alert('資料庫發生錯誤：' + err)
+          alert(err)
           reject(err)
         })
       })
@@ -156,7 +166,7 @@ export default {
 
           resolve()
         }).catch((err) => {
-          alert('資料庫發生錯誤：' + err)
+          alert(err)
           reject(err)
         })
       })

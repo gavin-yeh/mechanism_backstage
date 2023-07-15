@@ -155,6 +155,8 @@ export function createAndCheckData() {
   const flowLine = Number(document.getElementById('flow-line').value)
   const flowEmail = Number(document.getElementById('flow-email').value)
   const flowPromote = Number(document.getElementById('flow-promote').value)
+  const flowLineAt = Number(document.getElementById('flow-line-at').value)
+  const flowFacebook = Number(document.getElementById('flow-facebook').value)
 
   var i = {
     situationId: situation_id,
@@ -169,7 +171,9 @@ export function createAndCheckData() {
       letter: flowLetter,
       line: flowLine,
       email: flowEmail,
-      promote: flowPromote
+      promote: flowPromote,
+      lineAt: flowLineAt,
+      facebook: flowFacebook
     }
   }
   return i

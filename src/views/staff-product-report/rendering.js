@@ -289,6 +289,8 @@ export function showCheckAndChangeMessage(title, input) {
   document.getElementById('flow-line').value = input.outflow.line
   document.getElementById('flow-email').value = input.outflow.email
   document.getElementById('flow-promote').value = input.outflow.promote
+  document.getElementById('flow-line-at').value = input.outflow.lineAt
+  document.getElementById('flow-facebook').value = input.outflow.facebook
 }
 
 export function setCurveStyle(style, valueId, values) {

@@ -26,7 +26,7 @@ export default {
             return
           }
         }).catch((err) => {
-          alert('資料庫發生錯誤：' + err)
+          alert(err)
           reject(err)
         })
       })
@@ -44,7 +44,7 @@ export default {
 
           resolve()
         }).catch((err) => {
-          alert('資料庫發生錯誤：' + err)
+          alert(err)
           reject(err)
         })
       })

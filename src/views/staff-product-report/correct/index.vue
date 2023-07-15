@@ -27,7 +27,12 @@
           </tr>
           <tr>
             <td colspan="2">
-              <p>手寫信：<input id="flow-letter" type="number" style="width: 90px;">、LINE：<input id="flow-line" type="number" style="width: 90px;">、E-mail：<input id="flow-email" type="number" style="width: 90px;">、宣傳品數量：<input id="flow-promote" type="number" style="width: 90px;"></p>
+              <p>手寫信：<input id="flow-letter" type="number" style="width: 90px;">
+                、LINE：<input id="flow-line" type="number" style="width: 90px;">
+                、LINE@：<input id="flow-line-at" type="number" style="width: 90px;">
+                、E-mail：<input id="flow-email" type="number" style="width: 90px;">
+                、Facebook<input id="flow-facebook" type="number" style="width: 90px;">
+                、宣傳品數量：<input id="flow-promote" type="number" style="width: 90px;"></p>
             </td>
           </tr>
         </table>

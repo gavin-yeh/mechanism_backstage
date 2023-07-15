@@ -193,7 +193,12 @@
           </tr>
         </table>
 
-        <p>手寫信：<input id="flow-letter" type="number">、LINE：<input id="flow-line" type="number">、E-mail：<input id="flow-email" type="number">、宣傳品數量：<input id="flow-promote" type="number"></p>
+        <p>手寫信：<input id="flow-letter" type="number">
+          、LINE：<input id="flow-line" type="number">
+          、LINE@：<input id="flow-line-at" type="number">
+          、E-mail：<input id="flow-email" type="number">
+          、Facebook<input id="flow-facebook" type="number">
+          、宣傳品數量：<input id="flow-promote" type="number"></p>
         <div class="empty-line" />
 
         <p style="display: flex; justify-content: space-between; align-items: center;">
