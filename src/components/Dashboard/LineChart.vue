@@ -61,10 +61,92 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    createLine1(line) {
+      return {
+        name: line.name,
+        smooth: true,
+        type: 'line',
+        itemStyle: {
+          normal: {
+            color: '#FF005A',
+            lineStyle: {
+              color: '#FF005A',
+              width: 2
+            }
+          }
+        },
+        data: line.data,
+        animationDuration: 2800,
+        animationEasing: 'cubicInOut'
+      }
+    },
+    createLine2(line) {
+      return {
+        name: line.name,
+        smooth: true,
+        type: 'line',
+        itemStyle: {
+          normal: {
+            color: '#3888fa',
+            lineStyle: {
+              color: '#3888fa',
+              width: 2
+            },
+            areaStyle: {
+              color: '#f3f8ff'
+            }
+          }
+        },
+        data: line.data,
+        animationDuration: 2800,
+        animationEasing: 'quadraticOut'
+      }
+    },
+    createLine3(line) {
+      return {
+        name: line.name,
+        smooth: true,
+        type: 'line',
+        itemStyle: {
+          normal: {
+            color: '#FF00FF',
+            lineStyle: {
+              color: '#FF00FF',
+              width: 2
+            },
+            areaStyle: {
+              color: '#ACD6FF'
+            }
+          }
+        },
+        data: line.data,
+        animationDuration: 2800,
+        animationEasing: 'quadraticOut'
+      }
+    },
+    setOptions({ xAxis, lines } = {}) {
+      this.chart.clear()
+      const names = lines.map(obj => obj.name)
+
+      const createFunctions = [
+        this.createLine1,
+        this.createLine2,
+        this.createLine3
+      ]
+      var series = []
+      for (var i = 0; i < 3; i++) {
+        const line = lines[i]
+        if (!line) {
+          continue
+        }
+        const hdr = createFunctions[i]
+        const lineOpt = hdr(line)
+        series.push(lineOpt)
+      }
+
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: xAxis,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -90,44 +172,9 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: names
         },
-        series: [{
-          name: 'expected', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
-                color: '#FF005A',
-                width: 2
-              }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: 'actual',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+        series: series
       })
     }
   }

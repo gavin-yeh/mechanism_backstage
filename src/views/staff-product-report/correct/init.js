@@ -1,3 +1,4 @@
+import Curve from '../curve/curve.vue'
 import { setDateSelect, updateSum, createAndCheckData } from '../template.js'
 import { showModal } from './details.js'
 import { calculateTotalPoints, employmentPoints } from './modal.js'
@@ -7,11 +8,16 @@ import { weeklyProductListGet, weeklyProductListSubmit } from '@/api/weeklyProdu
 import { pointsConditionSettingMap, employmentSettingMap } from '../define.js'
 
 export default {
+  components: {
+    Curve
+  },
   data() {
     return {
       rows: [],
       thursday: '',
-      thursdayList: []
+      thursdayList: [],
+      dialogVisible: false,
+      popupData: {}
     }
   },
   async created() {
@@ -26,6 +32,10 @@ export default {
     document.addEventListener('input', updateSum)
   },
   methods: {
+    openDialog(item) {
+      this.popupData = { staffId: item.staffId, date: item.date }
+      this.dialogVisible = true
+    },
     onChangeIndividualStatus(item) {
       if (item.individualStatus === 'on holiday' || item.individualStatus === 'ethics') {
         item.totalPoints = 0

@@ -54,6 +54,7 @@
       <table id="staff-list">
         <tr>
           <th>日期</th>
+          <th>趨勢</th>
           <th>姓名</th>
           <th>職位</th>
           <th>職員<br>類型</th>
@@ -81,6 +82,7 @@
         </tr>
         <tr v-for="item in rows" :key="item.id">
           <td>{{ item.date }}</td>
+          <el-button @click="openDialog(item)">檢視趨勢</el-button>
           <td>{{ item.name }}</td>
           <td>{{ item.position }}</td>
           <td>{{ getStaffTypeValue(item.staffType) }}</td>
@@ -138,6 +140,11 @@
     </div>
     <el-button @click="submitPoints">更新</el-button>
     <el-button @click="submitPointsAndOutput">更新並輸出點數表單</el-button>
+
+    <!-- 曲線 -->
+    <el-dialog :visible.sync="dialogVisible" title="曲線趨勢" width="80%">
+      <Curve :popup-data="popupData" />
+    </el-dialog>
   </div>
 </template>
 
