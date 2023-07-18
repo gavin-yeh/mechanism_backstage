@@ -137,11 +137,13 @@ export function createAndCheckData() {
   // 读取读书时数的值
   const studyHours = {}
   for (const i of studyItems) {
-    const hours = Number(document.getElementById(`${i.value}_hours`).value)
-    const name = document.getElementById(`${i.value}_name`).value
-    const progress = document.getElementById(`${i.value}_progress`).value
+    var hours = Number(document.getElementById(`${i.value}_hours`).value)
+    var name = document.getElementById(`${i.value}_name`).value
+    var progress = document.getElementById(`${i.value}_progress`).value
     if (hours == null || hours === 0) {
-      continue
+      name = ''
+      hours = 0
+      progress = ''
     }
     studyHours[i.key] = ({ name, hours, progress })
   }

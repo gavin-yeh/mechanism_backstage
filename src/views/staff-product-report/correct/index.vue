@@ -77,8 +77,8 @@
           <th>出席<br>職員<br>會議</th>
           <th>GI</th>
           <th>GBS</th>
+          <th>特別<br>調整</th>
           <th>總計<br>點數</th>
-          <th>備註</th>
         </tr>
         <tr v-for="item in rows" :key="item.id">
           <td>{{ item.date }}</td>
@@ -120,21 +120,13 @@
             </select>
           </td>
           <td><input v-model="item.comment" type="text"></td>
-          <td>{{ item.basicPoints }}</td>
-          <td>{{ item.technicalTraining }}</td>
-          <td>{{ item.managementTraining }}</td>
-          <td>{{ item.caseAnalysis }}</td>
-          <td>{{ item.seniority }}</td>
-          <td><input v-model="item.positionStatus" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.workHours" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.studyHours" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.letter" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.unsubmittedStatus" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.attendStaffMeeting" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.GI" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.GBS" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></td>
-          <td><input v-model="item.totalPoints" type="number" step="0.01" style="width: 60px;"></td>
-          <td><input v-model="item.note" type="text"></td>
+
+          <td v-for="point in getPointDataList(item.pointDataList)" :key="point.points_type">
+            <template v-if="point.style === 'text'">{{ point.points }}</template>
+            <template v-if="point.style === 'input-box'"><input v-model="point.points" type="number" step="0.01" style="width: 60px;" @change="onChangePoints(item)"></template>
+          </td>
+
+          <td>{{ item.totalPoints }}</td>
         </tr>
       </table>
     </div>
@@ -142,7 +134,7 @@
     <el-button @click="submitPointsAndOutput">更新並輸出點數表單</el-button>
 
     <!-- 曲線 -->
-    <el-dialog :visible.sync="dialogVisible" title="曲線趨勢" width="80%">
+    <el-dialog :visible.sync="dialogVisible" :title="getDialogTitle()" width="80%">
       <Curve :popup-data="popupData" />
     </el-dialog>
   </div>

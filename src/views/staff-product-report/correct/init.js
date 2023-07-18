@@ -1,8 +1,7 @@
 import Curve from '../curve/curve.vue'
 import { setDateSelect, updateSum, createAndCheckData } from '../template.js'
 import { showModal } from './details.js'
-import { calculateTotalPoints, employmentPoints } from './modal.js'
-import { transformRows } from './points.js'
+import { transformRows, calculateTotalPoints, employmentPoints } from './points.js'
 import { weeklyProductReportGet, weeklyProductReportSubmit } from '@/api/weeklyProductReport'
 import { weeklyProductListGet, weeklyProductListSubmit } from '@/api/weeklyProductList'
 import { pointsConditionSettingMap, employmentSettingMap } from '../define.js'
@@ -16,6 +15,7 @@ export default {
       rows: [],
       thursday: '',
       thursdayList: [],
+      staffName: '',
       dialogVisible: false,
       popupData: {}
     }
@@ -33,14 +33,17 @@ export default {
   },
   methods: {
     openDialog(item) {
-      this.popupData = { staffId: item.staffId, date: item.date }
+      this.popupData = { staffId: item.staffId, date: item.date, staffName: item.name, position: item.position }
       this.dialogVisible = true
+    },
+    getDialogTitle() {
+      return `曲線趨勢-${this.popupData.staffName}-${this.popupData.position}`
     },
     onChangeIndividualStatus(item) {
       if (item.individualStatus === 'on holiday' || item.individualStatus === 'ethics') {
         item.totalPoints = 0
       } else {
-        calculateTotalPoints(item)
+        item.totalPoints = calculateTotalPoints(item.pointDataList)
       }
     },
     onChangeTotalStatus(item) {
@@ -50,7 +53,7 @@ export default {
       } else {
         item.positionStatus = 0
       }
-      calculateTotalPoints(item)
+      item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangeFormulaStatus(item) {
       if (item.formulaStatus === 'no') {
@@ -58,7 +61,7 @@ export default {
       } else {
         item.unsubmittedStatus = 0
       }
-      calculateTotalPoints(item)
+      item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangeStaffMeeting(item) {
       if (item.staffMeeting === 'no') {
@@ -66,10 +69,10 @@ export default {
       } else {
         item.attendStaffMeeting = 0
       }
-      calculateTotalPoints(item)
+      item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangePoints(item) {
-      calculateTotalPoints(item)
+      item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     async onChange(date) {
       this.rows = []
@@ -113,6 +116,9 @@ export default {
       const modal = document.getElementById('modal-check-profile')
       modal.style.display = 'none'
     },
+    getPointDataList(pointDataList) {
+      return pointDataList
+    },
     submitUpdate() {
       const thursday = this.thursday
       const staffId = this.staffId
@@ -144,7 +150,7 @@ export default {
           const outflows = response.data.outflows
           const studies = response.data.studies
           const workings = response.data.workings
-          const rows = transformRows(this.thursday, staffList, profiles, points, outflows, studies, workings)
+          const { rows } = transformRows(this.thursday, staffList, profiles, points, outflows, studies, workings)
 
           this.rows = rows
           resolve()

@@ -4,24 +4,46 @@ export function transformRows(thursday, staffList, profiles, points, outflows, s
   var rows = []
   staffList.forEach(staff => {
     const profile = profiles.find(p => p.staff_id === staff.id)
-    const pointList = points.filter(p => p.situation_id === ((profile) ? profile.id : -1))
-    const outflowList = points.filter(p => p.situation_id === ((profile) ? profile.id : -1))
+    const pointList = points.filter(p => p.staff_id === staff.id)
+    const outflowList = outflows.filter(p => p.situation_id === ((profile) ? profile.id : -1))
     const studyList = studies.filter(p => p.situation_id === ((profile) ? profile.id : -1))
     const workingList = workings.filter(p => p.situation_id === ((profile) ? profile.id : -1))
 
-    const base = pointList.find(p => p.point_type === 'base')
-    const technical_training_plus = pointList.find(p => p.point_type === 'technical_training_plus')
-    const management_training_plus = pointList.find(p => p.point_type === 'management_training_plus')
-    const audit_case_plus = pointList.find(p => p.point_type === 'audit_case_plus')
-    const seniority_plus = pointList.find(p => p.point_type === 'seniority_plus')
-    const job_status = pointList.find(p => p.point_type === 'job_status')
-    const working_hours = pointList.find(p => p.point_type === 'working_hours')
-    const study_hours = pointList.find(p => p.point_type === 'study_hours')
-    const writing_letters = pointList.find(p => p.point_type === 'writing_letters')
-    const attending_staff = pointList.find(p => p.point_type === 'attending_staff')
-    const non_submission = pointList.find(p => p.point_type === 'non_submission')
-    const gi = pointList.find(p => p.point_type === 'gi')
-    const gbs = pointList.find(p => p.point_type === 'gbs')
+    const pointItems = [
+      { type: 'base', style: 'text', hdr: point => ((point) ? point.points : staff.points_base) },
+      { type: 'technical_training_plus', style: 'text', hdr: point => ((point) ? point.points : staff.points_technical_training_plus) },
+      { type: 'management_training_plus', style: 'text', hdr: point => ((point) ? point.points : staff.points_management_training_plus) },
+      { type: 'audit_case_plus', style: 'text', hdr: point => ((point) ? point.points : staff.points_audit_case_plus) },
+      { type: 'seniority_plus', style: 'text', hdr: point => ((point) ? point.points : staff.points_seniority_plus) },
+      { type: 'job_status', style: 'text', hdr: point => ((point) ? point.points : calculateTotalConditionPoints(profile)) },
+      { type: 'working_hours', style: 'text', hdr: point => ((point) ? point.points : calculateWorkPoints(staff, workingList)) },
+      { type: 'study_hours', style: 'input-box', hdr: point => ((point) ? point.points : calculateStudiesPoints(staff, studyList)) },
+      { type: 'writing_letters', style: 'input-box', hdr: point => ((point) ? point.points : calculateOutflowPoints(staff, outflowList)) },
+      { type: 'attending_staff', style: 'input-box', hdr: point => ((point) ? point.points : calculateAttendingStaffPoints(staff, profile)) },
+      { type: 'non_submission', style: 'input-box', hdr: point => ((point) ? point.points : calculateNonSubmissionPoints(staff, profile)) },
+      { type: 'gi', style: 'input-box', hdr: point => ((point) ? point.points : 0) },
+      { type: 'gbs', style: 'input-box', hdr: point => ((point) ? point.points : 0) },
+      { type: 'special_adjustment', style: 'input-box', hdr: point => ((point) ? point.points : 0) }
+    ]
+
+    const pointDataList = pointItems.map((pointItem) => {
+      var point = pointList.find(p => p.points_type === pointItem.type)
+      const points = pointItem.hdr(point)
+      if (!point) {
+        point = {
+          remark: ''
+        }
+      }
+
+      return {
+        staff_id: staff.id,
+        date: thursday,
+        points_type: pointItem.type,
+        points: points,
+        remark: point.remark,
+        style: pointItem.style
+      }
+    })
 
     var row = {
       date: thursday,
@@ -36,31 +58,14 @@ export function transformRows(thursday, staffList, profiles, points, outflows, s
       formulaStatus: (profile) ? profile.finish_condition_formula : 0,
       staffMeeting: (profile) ? profile.attend_meeting : 0,
       comment: (profile) ? profile.annotation : '',
-      basicPoints: (base) ? base.points : staff.points_base,
-      technicalTraining: (technical_training_plus) ? technical_training_plus.points : staff.points_technical_training_plus,
-      managementTraining: (management_training_plus) ? management_training_plus.points : staff.points_management_training_plus,
-      caseAnalysis: (audit_case_plus) ? audit_case_plus.points : staff.points_audit_case_plus,
-      seniority: (seniority_plus) ? seniority_plus.points : staff.points_seniority_plus,
-      positionStatus: (job_status) ? job_status.points : calculateTotalConditionPoints(profile),
-      workHours: (working_hours) ? working_hours.points : calculateWorkPoints(staff, workingList),
-      studyHours: (study_hours) ? study_hours.points : calculateStudiesPoints(staff, studyList),
-      letter: (writing_letters) ? writing_letters.points : calculateOutflowPoints(staff, outflowList),
-      unsubmittedStatus: (attending_staff) ? attending_staff.points : calculateAttendingStaffPoints(staff, profile),
-      attendStaffMeeting: (non_submission) ? non_submission.points : calculateNonSubmissionPoints(staff, profile),
-      GI: (gi) ? gi.points : 0,
-      GBS: (gbs) ? gbs.points : 0
-    }
-
-    if (!profile) {
-      row.totalPoints = 0
-    } else {
-      row.totalPoints = calculateTotalPoints(row)
+      pointDataList: pointDataList,
+      totalPoints: (profile) ? calculateTotalPoints(pointDataList) : 0
     }
 
     rows.push(row)
   })
 
-  return rows
+  return { rows }
 }
 
 // 週總狀況
@@ -120,12 +125,12 @@ function calculateOutflowPoints(staff, outflowList) {
   }
 
   function calculateOutflowAmount(outflow_type) {
-    const ourflow = outflowList.find(p => p.id === outflow_type)
+    const ourflow = outflowList.find(p => p.outflow_type === outflow_type)
     if (!ourflow) {
       return 0
     }
 
-    return ourflow.amout
+    return ourflow.amount
   }
 
   if (calculateOutflowAmount('promote') === 0 && calculateOutflowAmount('line') === 0) {
@@ -167,21 +172,11 @@ function employmentPoints(staff, value) {
   return value
 }
 
-function calculateTotalPoints(item) {
-  var points =
-    10000 * Number(item.basicPoints) +
-    10000 * Number(item.technicalTraining) +
-    10000 * Number(item.managementTraining) +
-    10000 * Number(item.caseAnalysis) +
-    10000 * Number(item.seniority) +
-    10000 * Number(item.positionStatus) +
-    10000 * Number(item.workHours) +
-    10000 * Number(item.studyHours) +
-    10000 * Number(item.letter) +
-    10000 * Number(item.unsubmittedStatus) +
-    10000 * Number(item.attendStaffMeeting) +
-    10000 * Number(item.GI) +
-    10000 * Number(item.GBS)
+export function calculateTotalPoints(pointDataList) {
+  var points = 0
+  pointDataList.forEach(pointData => {
+    points += 10000 * pointData.points
+  })
 
   points = points / 10000
   if (points > 0) {
