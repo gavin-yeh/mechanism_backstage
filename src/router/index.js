@@ -71,6 +71,36 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/div2',
+    component: Layout,
+    redirect: '/div2',
+    name: 'div2',
+    meta: { title: '第二處', icon: 'el-icon-s-data' },
+    children: [
+      {
+        path: 'public_list',
+        name: 'public_list',
+        component: () => import('@/views/public/list/index'),
+        meta: { title: '大眾列表', icon: 'icon' }
+      }
+    ]
+  },
+  {
+    path: '/div3',
+    component: Layout,
+    redirect: '/div3',
+    name: 'div3',
+    meta: { title: '第三處', icon: 'el-icon-s-data' },
+    children: [
+      {
+        path: 'public_info',
+        name: 'public_info',
+        component: () => import('@/views/public/info/index'),
+        meta: { title: '出納', icon: 'icon', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/div7',
     component: Layout,
     redirect: '/div7',
