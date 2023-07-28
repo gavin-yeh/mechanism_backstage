@@ -73,8 +73,8 @@
           <th>工作<br>時數</th>
           <th>讀書<br>時數</th>
           <th>寫信</th>
-          <th>未交<br>狀況<br>公式</th>
           <th>出席<br>職員<br>會議</th>
+          <th>未交<br>狀況<br>公式</th>
           <th>GI</th>
           <th>GBS</th>
           <th>特別<br>調整</th>

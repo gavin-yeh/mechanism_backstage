@@ -164,7 +164,7 @@ function calculateNonSubmissionPoints(staff, profile) {
   return 0
 }
 
-function employmentPoints(staff, value) {
+export function employmentPoints(staff, value) {
   value = Number(value)
   if (staff.employment_type === 'half_time') {
     return value / 2

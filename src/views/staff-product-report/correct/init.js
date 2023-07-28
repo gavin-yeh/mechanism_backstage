@@ -47,27 +47,30 @@ export default {
       }
     },
     onChangeTotalStatus(item) {
+      var pointData = item.pointDataList.find(p => p.points_type === 'job_status')
       const point = pointsConditionSettingMap.get(item.totalStatus)
       if (point) {
-        item.positionStatus = point
+        pointData.points = point
       } else {
-        item.positionStatus = 0
+        pointData.points = 0
       }
       item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangeFormulaStatus(item) {
+      var pointData = item.pointDataList.find(p => p.points_type === 'non_submission')
       if (item.formulaStatus === 'no') {
-        item.unsubmittedStatus = employmentPoints(item, -1)
+        pointData.points = employmentPoints(item, -1)
       } else {
-        item.unsubmittedStatus = 0
+        pointData.points = 0
       }
       item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangeStaffMeeting(item) {
+      var pointData = item.pointDataList.find(p => p.points_type === 'attending_staff')
       if (item.staffMeeting === 'no') {
-        item.attendStaffMeeting = employmentPoints(item, -1)
+        pointData.points = employmentPoints(item, -1)
       } else {
-        item.attendStaffMeeting = 0
+        pointData.points = 0
       }
       item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
