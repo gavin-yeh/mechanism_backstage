@@ -40,11 +40,7 @@ export default {
       return `曲線趨勢-${this.popupData.staffName}-${this.popupData.position}`
     },
     onChangeIndividualStatus(item) {
-      if (item.individualStatus === 'on holiday' || item.individualStatus === 'ethics') {
-        item.totalPoints = 0
-      } else {
-        item.totalPoints = calculateTotalPoints(item.pointDataList)
-      }
+      item.totalPoints = calculateTotalPoints(item.pointDataList, item.individualStatus)
     },
     onChangeTotalStatus(item) {
       var pointData = item.pointDataList.find(p => p.points_type === 'job_status')
@@ -54,6 +50,7 @@ export default {
       } else {
         pointData.points = 0
       }
+
       item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangeFormulaStatus(item) {
@@ -63,6 +60,7 @@ export default {
       } else {
         pointData.points = 0
       }
+
       item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangeStaffMeeting(item) {
@@ -72,6 +70,7 @@ export default {
       } else {
         pointData.points = 0
       }
+
       item.totalPoints = calculateTotalPoints(item.pointDataList)
     },
     onChangePoints(item) {

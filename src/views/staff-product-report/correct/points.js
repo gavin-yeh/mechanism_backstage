@@ -166,13 +166,19 @@ function calculateNonSubmissionPoints(staff, profile) {
 
 export function employmentPoints(staff, value) {
   value = Number(value)
-  if (staff.employment_type === 'half_time') {
+  if (staff.staffType === 'half_time') {
     return value / 2
   }
   return value
 }
 
-export function calculateTotalPoints(pointDataList) {
+export function calculateTotalPoints(pointDataList, individualStatus) {
+  if (individualStatus) {
+    if (individualStatus === 'on holiday' || individualStatus === 'ethics') {
+      return 0
+    }
+  }
+
   var points = 0
   pointDataList.forEach(pointData => {
     points += 10000 * pointData.points
