@@ -26,9 +26,11 @@
 </template>
 
 <script>
+import { publicGet } from '@/api/public'
 import UserCard from './components/UserCard'
 import Timeline from './components/Timeline'
-import PublicRegister from '../register/index.vue';
+import PublicRegister from '../register/index.vue'
+
 
 // import Account from './components/Account'
 
@@ -38,22 +40,77 @@ export default {
   components: { UserCard, Timeline, PublicRegister },
   data() {
     return {
-      user: {},
+      user: {
+        name: '',
+        phone_number: '',
+        status: '',
+        remark: '',
+        avatar: '',
+      },
       activeTab: 'timeline'
     }
   },
   computed: {
   },
-  created() {
-    this.getUser()
+  async created() {
+    const data = this.$route.params.data
+    this.fetchPublicInfo(data.public_id)
+  },
+  mounted() {
   },
   methods: {
-    getUser() {
+    async fetchPublicInfo(publicId) {
+      const query = publicGet(publicId)
+      const [response] = await Promise.all([query])
+
+      const publicInfo = response.data.public
+
+      var base_info = ``
+      base_info += `開始服務日期：${new Date(publicInfo.started_date).toISOString().split('T')[0]}\n`
+      if (!publicInfo.is_refund) {
+        base_info += publicInfo.is_contact ? `可聯繫\n` : '不可聯繫\n'
+        base_info += publicInfo.is_publicity ? `可宣傳\n` : `不可宣傳\n`
+      } else {
+        base_info += publicInfo.is_refund ? '退費\n' : ''
+      }
+
+      const addressType = [
+        { type: 'home', value: '家用' },
+        { type: 'company', value: '公司' },
+      ]
+      
+      var main_address = ``
+      var spare_address = ``
+      if (publicInfo.main_address_type) {
+        const addressMainTypeName = addressType.find(obj => obj.type == publicInfo.main_address_type).value
+        main_address = `主地址：[${addressMainTypeName}]${publicInfo.main_address_county}${publicInfo.main_address_district}${publicInfo.main_address}`
+      }
+      if (publicInfo.spare_address_type) {
+        const addressSpareTypeName = addressType.find(obj => obj.type == publicInfo.spare_address_type).value
+        spare_address = `副地址：[${addressSpareTypeName}]${publicInfo.spare_address_county}${publicInfo.spare_address_district}${publicInfo.spare_address}`
+      }
+
+
+      var contact_info = ``
+      contact_info += `手機：${publicInfo.phone_number}\n`
+      contact_info += `電話：${publicInfo.telephone_number}\n`
+      contact_info += `E-mail：${publicInfo.email}\n`
+      contact_info += main_address
+      contact_info += spare_address
+
+      var fsm = ``
+      fsm += `FSM：${publicInfo.fsm_user_id}\n`
+      fsm += `關係：${publicInfo.fsm_relation}\n`
+
+
       this.user = {
-        name: '測試葉',
-        phone: '0921321301',
-        status: '正常服務中',
-        remark: 'good good',
+        name: `${publicInfo.name}(${publicInfo.nickname}) / ${publicInfo.english_name}`,
+        role: publicInfo.file_code,
+        base_info: base_info,
+        profile: `性別：${publicInfo.gender}\n婚姻：${publicInfo.marital_status}`,
+        contact_info: contact_info,
+        fsm: fsm,
+        remark: publicInfo.remark,
         avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
       }
     }

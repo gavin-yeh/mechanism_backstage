@@ -48,14 +48,11 @@ export default {
     },
     // 搜尋
     async handleFilterInput(val) {
-        this.filterText = val
+      this.filterText = val
       await this.fetchData()
     },
     // 操作
     async handleView(row) {
-      console.log('View:', row)
-    },
-    async handleRegister(row) {
       this.$router.push({ name: 'public_info', params: { data: row } })
     },
     // 分頁組件

@@ -8,13 +8,12 @@
 
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="姓名" prop="name" />
-      <el-table-column label="電話" prop="phone" />
+      <el-table-column label="電話" prop="phone_number" />
       <el-table-column label="狀態" prop="status" />
       <el-table-column label="最後接觸時間" prop="updated_at" />
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="handleView(scope.row)">詳情</el-button>
-          <el-button @click="handleRegister(scope.row)">註冊</el-button>
         </template>
       </el-table-column>
     </el-table>
